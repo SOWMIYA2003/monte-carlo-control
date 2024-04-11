@@ -120,57 +120,7 @@ def mc_control(env, gamma=1.0, init_alpha=0.5, min_alpha=0.01, alpha_decay_ratio
 
     return Q, V, pi
 ```
-##  PROGRAM TO EVALUATE THE POLICY:
-```
-import random
-import numpy as np
 
-def probability_success(env, pi, goal_state, n_episodes=100, max_steps=200, seed=123):
-    random.seed(seed)
-    np.random.seed(seed)
-    env.seed(seed)
-    results = []
-
-    for _ in range(n_episodes):
-        state, done, steps = env.reset(), False, 0
-        while not done and steps < max_steps:
-            action = pi[state]
-            state, _, done, _ = env.step(action)
-            steps += 1
-        results.append(state == goal_state)
-
-    success_rate = np.sum(results) / len(results)
-    return success_rate
-
-def mean_return(env, pi, n_episodes=100, max_steps=200, seed=123):
-    random.seed(seed)
-    np.random.seed(seed)
-    env.seed(seed)
-    results = []
-
-    for _ in range(n_episodes):
-        state, done, steps = env.reset(), False, 0
-        returns = 0.0
-        while not done and steps < max_steps:
-            action = pi[state]
-            state, reward, done, _ = env.step(action)
-            returns += reward
-            steps += 1
-        results.append(returns)
-
-    average_return = np.mean(results)
-    return average_return
-
-def results(env, optimal_pi, goal_state, seed=123):
-    success_rate = probability_success(env, optimal_pi, goal_state=goal_state, seed=seed)
-    avg_return = mean_return(env, optimal_pi, seed=seed)
-    
-    print(f'Reaches goal {success_rate:.2%}. 
-  			Obtains an average undiscounted return of: {avg_return:.4f}.')
-
-goal_state = 15
-results(env, optimal_pi, goal_state=goal_state)
-```
 ## OUTPUT:
 
 ### Optimal Value Function :
